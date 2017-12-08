@@ -92,13 +92,13 @@ public class GenerateTerrain : MonoBehaviour {
 
 	private void CreateMap() {
 		GameObject ground = (GameObject) Instantiate (floor, new Vector3 (currentMap.sizeX/2-0.5f, 0, currentMap.sizeZ/2-0.5f), this.transform.rotation);
-		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.5f, currentMap.sizeZ-1f);
+		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
-					Instantiate (wall, new Vector3 (i, 0, k), this.transform.rotation);
+					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
 				} else if (currentMap.GetCase(i, k).Equals('O')){
-					Instantiate (box, new Vector3 (i, 0, k), this.transform.rotation);
+					Instantiate (box, new Vector3 (i, box.transform.localScale.y/2, k), this.transform.rotation);
 				}
 			}
 		}
