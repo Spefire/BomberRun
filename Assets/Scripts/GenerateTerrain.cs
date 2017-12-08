@@ -49,10 +49,12 @@ public class GenerateTerrain : MonoBehaviour {
 	public GameObject wall;
 	public GameObject box;
 	public GameObject floor;
+	public GameObject player;
 
 	void Start () {
 		ReadMapFile ("map01.csv");
 		CreateMap ();
+		SpawnPlayer ();
 	}
 	
 	private void ReadMapFile(string filePath) {
@@ -102,5 +104,9 @@ public class GenerateTerrain : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	private void SpawnPlayer() {
+		
 	}
 }
