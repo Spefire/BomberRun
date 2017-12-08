@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GenerateTerrain : MonoBehaviour {
+public class GenerateMap : MonoBehaviour {
 
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -107,6 +107,6 @@ public class GenerateTerrain : MonoBehaviour {
 	}
 
 	private void SpawnPlayer() {
-		
+		Instantiate (player, currentMap.spawnP1, this.transform.rotation);
 	}
 }
