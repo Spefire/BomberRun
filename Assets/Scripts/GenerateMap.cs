@@ -107,6 +107,6 @@ public class GenerateMap : MonoBehaviour {
 	}
 
 	private void SpawnPlayer() {
-		Instantiate (player, currentMap.spawnP1, this.transform.rotation);
+		//Instantiate (player, currentMap.spawnP1, this.transform.rotation);
 	}
 }

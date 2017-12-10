@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class MouseLook : MonoBehaviour {
+public class MouseLook : NetworkBehaviour {
 
 	public float sensitivityX = 1.0f;
 	public float sensitivityY = 1.0f;
@@ -16,6 +17,9 @@ public class MouseLook : MonoBehaviour {
 	}
 
 	void Update() {
+		if (!character.GetComponent<PlayerMove>().isLocalPlayer)	{
+			return;
+		}
 		Vector2 md = new Vector2 (Input.GetAxisRaw ("Mouse X"), Input.GetAxisRaw ("Mouse Y"));
 
 		md = Vector2.Scale(md, new Vector2(sensitivityX * smoothing, sensitivityY * smoothing));
