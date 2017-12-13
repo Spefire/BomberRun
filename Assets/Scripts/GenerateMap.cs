@@ -14,8 +14,8 @@ public class GenerateMap : MonoBehaviour {
 		public int sizeX;
 		public int sizeZ;
 		public char[,] cases;
-		public Vector3 spawnP1;
-		public Vector3 spawnP2;
+		public Vector3 spawnPosP1;
+		public Vector3 spawnPosP2;
 
 		public Map(int sizeX, int sizeZ) {
 			this.sizeX = sizeX;
@@ -31,9 +31,9 @@ public class GenerateMap : MonoBehaviour {
 		public void SetCase(int x, int z, char type) {
 			this.cases [x, z] = type;
 			if (type.Equals ('A')) {
-				spawnP1 = new Vector3 (x, 0, z);
+				spawnPosP1 = new Vector3 (x, 0, z);
 			} else if (type.Equals ('B')) {
-				spawnP2 = new Vector3 (x, 0, z);
+				spawnPosP2 = new Vector3 (x, 0, z);
 			}
 		}
 
@@ -50,11 +50,12 @@ public class GenerateMap : MonoBehaviour {
 	public GameObject box;
 	public GameObject floor;
 	public GameObject player;
+	public GameObject spawnP1;
+	public GameObject spawnP2;
 
 	void Start () {
 		ReadMapFile ("map01.csv");
 		CreateMap ();
-		SpawnPlayer ();
 	}
 	
 	private void ReadMapFile(string filePath) {
@@ -104,9 +105,7 @@ public class GenerateMap : MonoBehaviour {
 				}
 			}
 		}
-	}
-
-	private void SpawnPlayer() {
-		//Instantiate (player, currentMap.spawnP1, this.transform.rotation);
+		spawnP1.transform.position = currentMap.spawnPosP1;
+		spawnP2.transform.position = currentMap.spawnPosP2;
 	}
 }
