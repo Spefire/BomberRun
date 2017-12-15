@@ -48,7 +48,6 @@ public class GenerateMap : MonoBehaviour {
 	public GameObject wall;
 	public GameObject box;
 	public GameObject floor;
-	public GameObject player;
 	public GameObject spawnP1;
 	public GameObject spawnP2;
 	private float boxProbability = 0.5f;

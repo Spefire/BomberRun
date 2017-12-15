@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkManager_CameraControl : NetworkManager {
+public class NetworkManager_CameraControl : NetworkLobbyManager {
 
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
