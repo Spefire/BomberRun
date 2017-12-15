@@ -45,7 +45,9 @@ public class NetworkManager_CameraControl : NetworkManager {
 	private void CheckGround() {
 		if (cameraPosition == Vector3.zero) {
 			GameObject ground = GameObject.FindWithTag ("Ground");
-			cameraPosition = ground.transform.position;
+			if (ground != null) {
+				cameraPosition = ground.transform.position;
+			}
 		}
 	}
 }
