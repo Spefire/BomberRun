@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GenerateMap : MonoBehaviour {
 
@@ -52,6 +51,7 @@ public class GenerateMap : MonoBehaviour {
 	public GameObject player;
 	public GameObject spawnP1;
 	public GameObject spawnP2;
+	private float boxProbability = 0.5f;
 
 	void Start () {
 		ReadMapFile ("map01.csv");
@@ -94,14 +94,17 @@ public class GenerateMap : MonoBehaviour {
 	}
 
 	private void CreateMap() {
-		GameObject ground = (GameObject) Instantiate (floor, new Vector3 (currentMap.sizeX/2-0.5f, 0, currentMap.sizeZ/2-0.5f), this.transform.rotation);
+		GameObject ground = (GameObject) Instantiate (floor, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
 		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
 					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
-				} else if (currentMap.GetCase(i, k).Equals('O')){
-					Instantiate (box, new Vector3 (i, box.transform.localScale.y/2, k), this.transform.rotation);
+				} else if (currentMap.GetCase(i, k).Equals(' ')){
+					float number = UnityEngine.Random.Range (0f, 1f);
+					if (number > boxProbability) {
+						Instantiate (box, new Vector3 (i, box.transform.localScale.y / 2, k), this.transform.rotation);
+					}
 				}
 			}
 		}
