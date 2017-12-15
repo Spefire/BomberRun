@@ -5,25 +5,34 @@ public class NetworkManager_CameraControl : NetworkLobbyManager {
 
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
-	public Vector3 cameraPosition = Vector3.zero;
 	public float cameraRotationRadius = 24f;
 	public float cameraRotationSpeed = 3f;
 	public bool canRotate = true;
-	private float rotation;
+	private float cameraRotation;
+	private Vector3 cameraPosition;
+	private GenerateMap genMap;
 
-	public override void OnStartClient(NetworkClient client) {
-		canRotate = false;
+	void Start () {
+		genMap = GetComponent<GenerateMap> ();
+		cameraPosition = genMap.CreateMap ("map01.csv");
+		DontDestroyOnLoad (sceneCamera);
 	}
 
-	public override void OnStartHost() {
+	public override void OnLobbyStartClient(NetworkClient client) {
 		canRotate = false;
+		genMap.CreateStructure ();
 	}
 
-	public override void OnStopClient() {
+	public override void OnLobbyStartHost() {
+		canRotate = false;
+		genMap.CreateStructure ();
+	}
+
+	public override void OnLobbyStopClient() {
 		canRotate = true;
 	}
 
-	public override void OnStopHost() {
+	public override void OnLobbyStopHost() {
 		canRotate = true;
 	}
 
@@ -31,23 +40,13 @@ public class NetworkManager_CameraControl : NetworkLobbyManager {
 		if (!canRotate) {
 			return;
 		}
-		CheckGround ();
-		rotation += cameraRotationSpeed * Time.deltaTime;
-		if (rotation >= 360f) {
-			rotation -= 360f;
+		cameraRotation += cameraRotationSpeed * Time.deltaTime;
+		if (cameraRotation >= 360f) {
+			cameraRotation -= 360f;
 		}
 		sceneCamera.position = cameraPosition;
-		sceneCamera.rotation = Quaternion.Euler(0f, rotation, 0f);
+		sceneCamera.rotation = Quaternion.Euler(0f, cameraRotation, 0f);
 		sceneCamera.Translate (0f, cameraRotationRadius, -cameraRotationRadius);
 		sceneCamera.LookAt (cameraPosition);
-	}
-
-	private void CheckGround() {
-		if (cameraPosition == Vector3.zero) {
-			GameObject ground = GameObject.FindWithTag ("Ground");
-			if (ground != null) {
-				cameraPosition = ground.transform.position;
-			}
-		}
 	}
 }

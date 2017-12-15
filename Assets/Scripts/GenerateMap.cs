@@ -47,17 +47,12 @@ public class GenerateMap : MonoBehaviour {
 	public Map currentMap;
 	public GameObject wall;
 	public GameObject box;
-	public GameObject floor;
+	public GameObject ground;
 	public GameObject spawnP1;
 	public GameObject spawnP2;
 	private float boxProbability = 0.5f;
 
-	void Start () {
-		ReadMapFile ("map01.csv");
-		CreateMap ();
-	}
-	
-	private void ReadMapFile(string filePath) {
+	public Vector3 CreateMap(string filePath) {
 		string path = Application.streamingAssetsPath + "/"+ filePath;
 		try{
 			StreamReader reader = new StreamReader(path);
@@ -90,16 +85,41 @@ public class GenerateMap : MonoBehaviour {
 		} catch (Exception e) {
 			Debug.LogWarning ("Cannot load the map !\n"+e.Message);
 		}
+
+		//Create Spawns
+		spawnP1.transform.position = currentMap.spawnPosP1;
+		spawnP2.transform.position = currentMap.spawnPosP2;
+		DontDestroyOnLoad (spawnP1);
+		DontDestroyOnLoad (spawnP2);
+
+		//Return the map position
+		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
 	}
 
-	private void CreateMap() {
-		GameObject ground = (GameObject) Instantiate (floor, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
-		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+	public void CreateStructure() {
+		
+		//Create Ground
+		GameObject g = (GameObject) Instantiate (ground, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
+		g.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+		DontDestroyOnLoad(g);
+
+		//Create Walls
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
-					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
-				} else if (currentMap.GetCase(i, k).Equals(' ')){
+					GameObject w = (GameObject) Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
+					DontDestroyOnLoad (w);
+				}
+			}
+		}
+	}
+
+	public void CreateBoxes() {
+
+		//Create Boxes
+		for(int i = 0; i < currentMap.sizeX; i++) {
+			for(int k = 0; k < currentMap.sizeZ; k++) {
+				if (currentMap.GetCase(i, k).Equals(' ')){
 					float number = UnityEngine.Random.Range (0f, 1f);
 					if (number > boxProbability) {
 						Instantiate (box, new Vector3 (i, box.transform.localScale.y / 2, k), this.transform.rotation);
@@ -107,7 +127,5 @@ public class GenerateMap : MonoBehaviour {
 				}
 			}
 		}
-		spawnP1.transform.position = currentMap.spawnPosP1;
-		spawnP2.transform.position = currentMap.spawnPosP2;
 	}
 }
