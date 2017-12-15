@@ -1,38 +1,38 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkManager_CameraControl : NetworkLobbyManager {
+public class NetworkManagerExtension : NetworkManager {
 
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
-	public float cameraRotationRadius = 24f;
-	public float cameraRotationSpeed = 3f;
+	public float cameraRotationRadius = 25f;
+	public float cameraRotationSpeed = 5f;
 	public bool canRotate = true;
 	private float cameraRotation;
 	private Vector3 cameraPosition;
-	private GenerateMap genMap;
+	private MapGeneration genMap;
 
 	void Start () {
-		genMap = GetComponent<GenerateMap> ();
-		cameraPosition = genMap.CreateMap ("map01.csv");
-		DontDestroyOnLoad (sceneCamera);
-	}
-
-	public override void OnLobbyStartClient(NetworkClient client) {
-		canRotate = false;
+		genMap = GetComponent<MapGeneration> ();
+		genMap.CreateMap ("map01.csv");
 		genMap.CreateStructure ();
+		cameraPosition = genMap.GetMapPosition ();
 	}
 
-	public override void OnLobbyStartHost() {
+	public override void OnStartHost() {
 		canRotate = false;
-		genMap.CreateStructure ();
+		genMap.CreateBoxes ();
 	}
 
-	public override void OnLobbyStopClient() {
+	public override void OnStartClient(NetworkClient client) {
+		canRotate = false;
+	}
+
+	public override void OnStopHost() {
 		canRotate = true;
 	}
 
-	public override void OnLobbyStopHost() {
+	public override void OnStopClient() {
 		canRotate = true;
 	}
 

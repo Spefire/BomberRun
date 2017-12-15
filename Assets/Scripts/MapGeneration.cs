@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class GenerateMap : MonoBehaviour {
+public class MapGeneration : MonoBehaviour {
 
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -30,9 +30,9 @@ public class GenerateMap : MonoBehaviour {
 		public void SetCase(int x, int z, char type) {
 			this.cases [x, z] = type;
 			if (type.Equals ('A')) {
-				spawnPosP1 = new Vector3 (x, 0, z);
+				spawnPosP1 = new Vector3 (x, 100, z);
 			} else if (type.Equals ('B')) {
-				spawnPosP2 = new Vector3 (x, 0, z);
+				spawnPosP2 = new Vector3 (x, 100, z);
 			}
 		}
 
@@ -48,14 +48,13 @@ public class GenerateMap : MonoBehaviour {
 	public GameObject wall;
 	public GameObject box;
 	public GameObject ground;
-	public GameObject spawnP1;
-	public GameObject spawnP2;
+	public GameObject spawnPoint;
 	private float boxProbability = 0.5f;
 
-	public Vector3 CreateMap(string filePath) {
+	public void CreateMap(string filePath) {
 		string path = Application.streamingAssetsPath + "/"+ filePath;
 		try{
-			StreamReader reader = new StreamReader(path);
+			StreamReader reader = new StreamReader(path);  
 			bool first = true;
 			int k = 0;
 			while(!reader.EndOfStream){
@@ -85,30 +84,23 @@ public class GenerateMap : MonoBehaviour {
 		} catch (Exception e) {
 			Debug.LogWarning ("Cannot load the map !\n"+e.Message);
 		}
-
-		//Create Spawns
-		spawnP1.transform.position = currentMap.spawnPosP1;
-		spawnP2.transform.position = currentMap.spawnPosP2;
-		DontDestroyOnLoad (spawnP1);
-		DontDestroyOnLoad (spawnP2);
-
-		//Return the map position
-		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
 	}
 
 	public void CreateStructure() {
-		
+
+		//Create SpawnPoints
+		Instantiate (spawnPoint, currentMap.spawnPosP1, this.transform.rotation);
+		Instantiate (spawnPoint, currentMap.spawnPosP2, this.transform.rotation);
+
 		//Create Ground
 		GameObject g = (GameObject) Instantiate (ground, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
 		g.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
-		DontDestroyOnLoad(g);
 
 		//Create Walls
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
-					GameObject w = (GameObject) Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
-					DontDestroyOnLoad (w);
+					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
 				}
 			}
 		}
@@ -128,4 +120,10 @@ public class GenerateMap : MonoBehaviour {
 			}
 		}
 	}
+
+	public Vector3 GetMapPosition() {
+		//Return the map position
+		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
+	}
+
 }
