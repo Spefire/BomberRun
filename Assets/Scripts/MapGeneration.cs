@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GenerateMap : MonoBehaviour {
+public class MapGeneration : MonoBehaviour {
 
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -14,8 +13,8 @@ public class GenerateMap : MonoBehaviour {
 		public int sizeX;
 		public int sizeZ;
 		public char[,] cases;
-		public Vector3 spawnP1;
-		public Vector3 spawnP2;
+		public Vector3 spawnPosP1;
+		public Vector3 spawnPosP2;
 
 		public Map(int sizeX, int sizeZ) {
 			this.sizeX = sizeX;
@@ -31,9 +30,9 @@ public class GenerateMap : MonoBehaviour {
 		public void SetCase(int x, int z, char type) {
 			this.cases [x, z] = type;
 			if (type.Equals ('A')) {
-				spawnP1 = new Vector3 (x, 0, z);
+				spawnPosP1 = new Vector3 (x, 100, z);
 			} else if (type.Equals ('B')) {
-				spawnP2 = new Vector3 (x, 0, z);
+				spawnPosP2 = new Vector3 (x, 100, z);
 			}
 		}
 
@@ -48,19 +47,14 @@ public class GenerateMap : MonoBehaviour {
 	public Map currentMap;
 	public GameObject wall;
 	public GameObject box;
-	public GameObject floor;
-	public GameObject player;
+	public GameObject ground;
+	public GameObject spawnPoint;
+	private float boxProbability = 0.5f;
 
-	void Start () {
-		ReadMapFile ("map01.csv");
-		CreateMap ();
-		SpawnPlayer ();
-	}
-	
-	private void ReadMapFile(string filePath) {
+	public void CreateMap(string filePath) {
 		string path = Application.streamingAssetsPath + "/"+ filePath;
 		try{
-			StreamReader reader = new StreamReader(path);
+			StreamReader reader = new StreamReader(path);  
 			bool first = true;
 			int k = 0;
 			while(!reader.EndOfStream){
@@ -92,21 +86,44 @@ public class GenerateMap : MonoBehaviour {
 		}
 	}
 
-	private void CreateMap() {
-		GameObject ground = (GameObject) Instantiate (floor, new Vector3 (currentMap.sizeX/2-0.5f, 0, currentMap.sizeZ/2-0.5f), this.transform.rotation);
-		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+	public void CreateStructure() {
+
+		//Create SpawnPoints
+		Instantiate (spawnPoint, currentMap.spawnPosP1, this.transform.rotation);
+		Instantiate (spawnPoint, currentMap.spawnPosP2, this.transform.rotation);
+
+		//Create Ground
+		GameObject g = (GameObject) Instantiate (ground, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
+		g.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+
+		//Create Walls
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
 					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
-				} else if (currentMap.GetCase(i, k).Equals('O')){
-					Instantiate (box, new Vector3 (i, box.transform.localScale.y/2, k), this.transform.rotation);
 				}
 			}
 		}
 	}
 
-	private void SpawnPlayer() {
-		Instantiate (player, currentMap.spawnP1, this.transform.rotation);
+	public void CreateBoxes() {
+
+		//Create Boxes
+		for(int i = 0; i < currentMap.sizeX; i++) {
+			for(int k = 0; k < currentMap.sizeZ; k++) {
+				if (currentMap.GetCase(i, k).Equals(' ')){
+					float number = UnityEngine.Random.Range (0f, 1f);
+					if (number > boxProbability) {
+						Instantiate (box, new Vector3 (i, box.transform.localScale.y / 2, k), this.transform.rotation);
+					}
+				}
+			}
+		}
 	}
+
+	public Vector3 GetMapPosition() {
+		//Return the map position
+		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
+	}
+
 }
