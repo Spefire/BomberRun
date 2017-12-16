@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 7b51f32e63a2a284ab12f2fdc166869b
+timeCreated: 1513466507
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Grinched
+  fontNames:
+  - Grinched
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
