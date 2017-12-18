@@ -30,9 +30,9 @@ public class MapGeneration : MonoBehaviour {
 		public void SetCase(int x, int z, char type) {
 			this.cases [x, z] = type;
 			if (type.Equals ('A')) {
-				spawnPosP1 = new Vector3 (x, 100, z);
+				spawnPosP1 = new Vector3 (x, 2, z);
 			} else if (type.Equals ('B')) {
-				spawnPosP2 = new Vector3 (x, 100, z);
+				spawnPosP2 = new Vector3 (x, 2, z);
 			}
 		}
 
