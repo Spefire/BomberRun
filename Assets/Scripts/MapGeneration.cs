@@ -40,18 +40,20 @@ public class MapGeneration : NetworkBehaviour {
 		public char GetCase(int x, int z) {
 			return cases [x, z];
 		}
+
+		public bool IsEmpty(int x, int z) {
+			return cases [x, z]==' ';
+		}
 	}
 
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
 
-	public Map currentMap;
+	public static Map currentMap;
 	public GameObject wallPrefab;
 	public GameObject boxPrefab;
 	public GameObject groundPrefab;
 	public GameObject spawnPoint;
-	private float boxProbability = 0.5f;
-	private bool boxesSpawned = false;
 
 	public void CreateMap(string filePath) {
 		string path = Application.streamingAssetsPath + "/"+ filePath;
