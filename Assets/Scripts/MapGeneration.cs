@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class MapGeneration : MonoBehaviour {
+public class MapGeneration : NetworkBehaviour {
 
 	//-----------------------------------------------------------------------
 	//-----------------------------------------------------------------------
@@ -45,11 +46,12 @@ public class MapGeneration : MonoBehaviour {
 	//-----------------------------------------------------------------------
 
 	public Map currentMap;
-	public GameObject wall;
-	public GameObject box;
-	public GameObject ground;
+	public GameObject wallPrefab;
+	public GameObject boxPrefab;
+	public GameObject groundPrefab;
 	public GameObject spawnPoint;
 	private float boxProbability = 0.5f;
+	private bool boxesSpawned = false;
 
 	public void CreateMap(string filePath) {
 		string path = Application.streamingAssetsPath + "/"+ filePath;
@@ -93,29 +95,16 @@ public class MapGeneration : MonoBehaviour {
 		Instantiate (spawnPoint, currentMap.spawnPosP2, this.transform.rotation);
 
 		//Create Ground
-		GameObject g = (GameObject) Instantiate (ground, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
-		g.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+		GameObject ground = (GameObject) Instantiate (groundPrefab, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
+		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
 
-		//Create Walls
+		//Create Walls and Boxes
 		for(int i = 0; i < currentMap.sizeX; i++) {
 			for(int k = 0; k < currentMap.sizeZ; k++) {
 				if (currentMap.GetCase(i, k).Equals('X')){
-					Instantiate (wall, new Vector3 (i, wall.transform.localScale.y/2, k), this.transform.rotation);
-				}
-			}
-		}
-	}
-
-	public void CreateBoxes() {
-
-		//Create Boxes
-		for(int i = 0; i < currentMap.sizeX; i++) {
-			for(int k = 0; k < currentMap.sizeZ; k++) {
-				if (currentMap.GetCase(i, k).Equals(' ')){
-					float number = UnityEngine.Random.Range (0f, 1f);
-					if (number > boxProbability) {
-						Instantiate (box, new Vector3 (i, box.transform.localScale.y / 2, k), this.transform.rotation);
-					}
+					Instantiate (wallPrefab, new Vector3 (i, wallPrefab.transform.localScale.y/2, k), this.transform.rotation);
+				} else if (currentMap.GetCase(i, k).Equals('O')) {
+					Instantiate (boxPrefab, new Vector3 (i, boxPrefab.transform.localScale.y / 2, k), this.transform.rotation);
 				}
 			}
 		}
@@ -124,12 +113,5 @@ public class MapGeneration : MonoBehaviour {
 	public Vector3 GetMapPosition() {
 		//Return the map position
 		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
-	}
-
-	public void CleanBoxes() {
-		GameObject[] boxes = GameObject.FindGameObjectsWithTag ("Box");
-		foreach (GameObject b in boxes) {
-			Destroy (b);
-		}
 	}
 }

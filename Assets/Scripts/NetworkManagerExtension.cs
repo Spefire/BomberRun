@@ -15,15 +15,15 @@ public class NetworkManagerExtension : NetworkManager {
 	public bool canRotate = true;
 	private float cameraRotation;
 	private Vector3 cameraPosition;
-	private MapGeneration genMap;
+	[Header("Map Properties")]
+	public MapGeneration genMap;
 
 	//---------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------
 
 	void Start () {
 		isOnCredits = false;
-		genMap = GetComponent<MapGeneration> ();
-		genMap.CreateMap ("map01.csv");
+		genMap.CreateMap ("map02.csv");
 		genMap.CreateStructure ();
 		cameraPosition = genMap.GetMapPosition ();
 	}
@@ -61,7 +61,6 @@ public class NetworkManagerExtension : NetworkManager {
 
 	public override void OnStartHost() {
 		canRotate = false;
-		//genMap.CreateBoxes ();
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
 		interfac.SetActive (true);
@@ -80,7 +79,6 @@ public class NetworkManagerExtension : NetworkManager {
 		canRotate = true;
 		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
-		genMap.CleanBoxes ();
 	}
 
 	public override void OnStopClient() {
