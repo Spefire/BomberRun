@@ -18,7 +18,7 @@ public class NetworkManagerExtension : NetworkManager {
 	private MapGeneration genMap;
 
 	void Start () {
-		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.visible = false;
 		isOnCredits = false;
 		genMap = GetComponent<MapGeneration> ();
