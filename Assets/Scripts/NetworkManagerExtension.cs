@@ -17,15 +17,47 @@ public class NetworkManagerExtension : NetworkManager {
 	private Vector3 cameraPosition;
 	private MapGeneration genMap;
 
+	//---------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------
+
 	void Start () {
-		Cursor.lockState = CursorLockMode.Confined;
-		Cursor.visible = false;
 		isOnCredits = false;
 		genMap = GetComponent<MapGeneration> ();
 		genMap.CreateMap ("map01.csv");
 		genMap.CreateStructure ();
 		cameraPosition = genMap.GetMapPosition ();
 	}
+
+	void Update () {
+		if (!canRotate) {
+			return;
+		}
+
+		if (!isOnCredits && Input.GetKeyDown (KeyCode.Q)) {
+			Application.Quit ();
+		}
+		if (!isOnCredits && Input.GetKeyDown (KeyCode.D)) {
+			menuPrincipal.SetActive (false);
+			menuCredits.SetActive (true);
+			isOnCredits = true;
+		} else if (isOnCredits && Input.GetKeyDown (KeyCode.D)) {
+			menuCredits.SetActive (false);
+			menuPrincipal.SetActive (true);
+			isOnCredits = false;
+		}
+
+		cameraRotation += cameraRotationSpeed * Time.deltaTime;
+		if (cameraRotation >= 360f) {
+			cameraRotation -= 360f;
+		}
+		sceneCamera.position = cameraPosition;
+		sceneCamera.rotation = Quaternion.Euler(0f, cameraRotation, 0f);
+		sceneCamera.Translate (0f, cameraRotationRadius, -cameraRotationRadius);
+		sceneCamera.LookAt (cameraPosition);
+	}
+
+	//---------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------
 
 	public override void OnStartHost() {
 		canRotate = false;
@@ -55,33 +87,5 @@ public class NetworkManagerExtension : NetworkManager {
 		canRotate = true;
 		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
-	}
-
-	void Update () {
-		if (!canRotate) {
-			return;
-		}
-
-		if (!isOnCredits && Input.GetKeyDown (KeyCode.Q)) {
-			Application.Quit ();
-		}
-		if (!isOnCredits && Input.GetKeyDown (KeyCode.D)) {
-			menuPrincipal.SetActive (false);
-			menuCredits.SetActive (true);
-			isOnCredits = true;
-		} else if (isOnCredits && Input.GetKeyDown (KeyCode.D)) {
-			menuCredits.SetActive (false);
-			menuPrincipal.SetActive (true);
-			isOnCredits = false;
-		}
-
-		cameraRotation += cameraRotationSpeed * Time.deltaTime;
-		if (cameraRotation >= 360f) {
-			cameraRotation -= 360f;
-		}
-		sceneCamera.position = cameraPosition;
-		sceneCamera.rotation = Quaternion.Euler(0f, cameraRotation, 0f);
-		sceneCamera.Translate (0f, cameraRotationRadius, -cameraRotationRadius);
-		sceneCamera.LookAt (cameraPosition);
 	}
 }
