@@ -42,6 +42,7 @@ public class NetworkManagerExtension : NetworkManager {
 	public override void OnStopHost() {
 		canRotate = true;
 		menuPrincipal.SetActive (true);
+		genMap.CleanBoxes ();
 	}
 
 	public override void OnStopClient() {

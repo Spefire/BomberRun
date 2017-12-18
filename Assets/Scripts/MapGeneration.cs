@@ -126,4 +126,10 @@ public class MapGeneration : MonoBehaviour {
 		return (new Vector3 ((currentMap.sizeX - 1f) / 2, 0, (currentMap.sizeZ - 1f) / 2));
 	}
 
+	public void CleanBoxes() {
+		GameObject[] boxes = GameObject.FindGameObjectsWithTag ("Box");
+		foreach (GameObject b in boxes) {
+			Destroy (b);
+		}
+	}
 }
