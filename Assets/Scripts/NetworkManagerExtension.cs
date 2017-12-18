@@ -6,6 +6,7 @@ public class NetworkManagerExtension : NetworkManager {
 	[Header("Canvas Properties")]
 	public GameObject menuPrincipal;
 	public GameObject menuCredits;
+	public GameObject interfac;
 	private bool isOnCredits;
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
@@ -17,6 +18,8 @@ public class NetworkManagerExtension : NetworkManager {
 	private MapGeneration genMap;
 
 	void Start () {
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 		isOnCredits = false;
 		genMap = GetComponent<MapGeneration> ();
 		genMap.CreateMap ("map01.csv");
@@ -29,6 +32,7 @@ public class NetworkManagerExtension : NetworkManager {
 		genMap.CreateBoxes ();
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
+		interfac.SetActive (true);
 		isOnCredits = false;
 	}
 
@@ -36,17 +40,20 @@ public class NetworkManagerExtension : NetworkManager {
 		canRotate = false;
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
+		interfac.SetActive (true);
 		isOnCredits = false;
 	}
 
 	public override void OnStopHost() {
 		canRotate = true;
+		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
 		genMap.CleanBoxes ();
 	}
 
 	public override void OnStopClient() {
 		canRotate = true;
+		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
 	}
 
