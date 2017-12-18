@@ -61,7 +61,7 @@ public class NetworkManagerExtension : NetworkManager {
 
 	public override void OnStartHost() {
 		canRotate = false;
-		genMap.CreateBoxes ();
+		//genMap.CreateBoxes ();
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
 		interfac.SetActive (true);
