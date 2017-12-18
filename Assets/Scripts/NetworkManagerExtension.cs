@@ -3,6 +3,8 @@ using UnityEngine.Networking;
 
 public class NetworkManagerExtension : NetworkManager {
 
+	[Header("Canvas Properties")]
+	public GameObject canvas;
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
 	public float cameraRotationRadius = 25f;
@@ -22,18 +24,22 @@ public class NetworkManagerExtension : NetworkManager {
 	public override void OnStartHost() {
 		canRotate = false;
 		genMap.CreateBoxes ();
+		canvas.SetActive (false);
 	}
 
 	public override void OnStartClient(NetworkClient client) {
 		canRotate = false;
+		canvas.SetActive (false);
 	}
 
 	public override void OnStopHost() {
 		canRotate = true;
+		canvas.SetActive (true);
 	}
 
 	public override void OnStopClient() {
 		canRotate = true;
+		canvas.SetActive (true);
 	}
 
 	void Update () {
