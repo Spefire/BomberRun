@@ -20,7 +20,7 @@ public class RayGame : NetworkBehaviour {
 		currentSize = 0.0f;
 	}
 
-	[ServerCallback]
+	/*[ServerCallback]
 	void Update () {
 		if (canExpand) {
 			if (currentSize < (bg.powerLevel - startSize + 0.5f)) {
@@ -44,16 +44,16 @@ public class RayGame : NetworkBehaviour {
 				NetworkServer.Destroy (this.gameObject);
 			}
 		}
-	}
+	}*/
 
 	public void SetBombGame(BombGame bg, int orientation) {
-		this.bg = bg;
+		/*this.bg = bg;
 		this.canExpand = true;
-		this.orientation = orientation;
+		this.orientation = orientation;*/
 	}
 
 	void OnTriggerEnter(Collider obj) {
-		if (obj.gameObject.tag.Equals ("Player")) {
+		/*if (obj.gameObject.tag.Equals ("Player")) {
 			bg.GetPlayerGame().LooseLife();
 		}
 		if (obj.gameObject.tag.Equals ("Box")) {
@@ -62,7 +62,7 @@ public class RayGame : NetworkBehaviour {
 			MapGeneration.currentMap.SetCase (x, z, ' ');
 			NetworkServer.Destroy (obj.gameObject);
 			NetworkServer.Destroy (this.gameObject);
-		}
+		}*/
 	}
 	
 }

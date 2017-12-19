@@ -18,7 +18,7 @@ public class BombGame : NetworkBehaviour {
 		age = 0.0f;
 	}
 
-	[ServerCallback]
+	/*[ServerCallback]
 	void Update () {
 		age += Time.deltaTime;
 		if (age > bombLifetime) {
@@ -45,13 +45,13 @@ public class BombGame : NetworkBehaviour {
 			//
 			NetworkServer.Destroy (gameObject);
 		}
-	}
+	}*/
 
 	public PlayerGame GetPlayerGame() {
 		return pg;
 	}
 
 	public void SetPlayerGame(PlayerGame pg) {
-		this.pg = pg;
+		//this.pg = pg;
 	}
 }
