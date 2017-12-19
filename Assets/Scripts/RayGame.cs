@@ -57,6 +57,9 @@ public class RayGame : NetworkBehaviour {
 			bg.GetPlayerGame().LooseLife();
 		}
 		if (obj.gameObject.tag.Equals ("Box")) {
+			int x = int.Parse(Mathf.Round (obj.transform.position.x).ToString());
+			int z = int.Parse(Mathf.Round (obj.transform.position.z).ToString());
+			MapGeneration.currentMap.SetCase (x, z, ' ');
 			NetworkServer.Destroy (obj.gameObject);
 			NetworkServer.Destroy (this.gameObject);
 		}
