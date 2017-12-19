@@ -6,7 +6,6 @@ public class NetworkManagerExtension : NetworkManager {
 	[Header("Canvas Properties")]
 	public GameObject menuPrincipal;
 	public GameObject menuCredits;
-	public GameObject interfac;
 	private bool isOnCredits;
 	[Header("Scene Camera Properties")]
 	public Transform sceneCamera;
@@ -63,7 +62,6 @@ public class NetworkManagerExtension : NetworkManager {
 		canRotate = false;
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
-		interfac.SetActive (true);
 		isOnCredits = false;
 	}
 
@@ -71,19 +69,16 @@ public class NetworkManagerExtension : NetworkManager {
 		canRotate = false;
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
-		interfac.SetActive (true);
 		isOnCredits = false;
 	}
 
 	public override void OnStopHost() {
 		canRotate = true;
-		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
 	}
 
 	public override void OnStopClient() {
 		canRotate = true;
-		interfac.SetActive (false);
 		menuPrincipal.SetActive (true);
 	}
 }
