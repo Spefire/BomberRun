@@ -47,6 +47,10 @@ public class BombGame : NetworkBehaviour {
 		}
 	}
 
+	public PlayerGame GetPlayerGame() {
+		return pg;
+	}
+
 	public void SetPlayerGame(PlayerGame pg) {
 		this.pg = pg;
 	}

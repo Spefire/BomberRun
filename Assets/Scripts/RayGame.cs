@@ -51,4 +51,15 @@ public class RayGame : NetworkBehaviour {
 		this.canExpand = true;
 		this.orientation = orientation;
 	}
+
+	void OnTriggerEnter(Collider obj) {
+		if (obj.gameObject.tag.Equals ("Player")) {
+			bg.GetPlayerGame().lifes--;
+		}
+		if (obj.gameObject.tag.Equals ("Box")) {
+			NetworkServer.Destroy (obj.gameObject);
+			NetworkServer.Destroy (this.gameObject);
+		}
+	}
+	
 }
