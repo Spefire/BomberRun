@@ -22,7 +22,7 @@ public class BombGame : NetworkBehaviour {
 	void Update () {
 		age += Time.deltaTime;
 		if (age > bombLifetime) {
-			pg.numberBombs++;
+			pg.GainBomb();
 			//1
 			GameObject g = (GameObject) Instantiate (rayPrefab, this.transform.position, this.transform.rotation);
 			g.GetComponent<RayGame> ().SetBombGame (this, 1);

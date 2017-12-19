@@ -54,7 +54,7 @@ public class RayGame : NetworkBehaviour {
 
 	void OnTriggerEnter(Collider obj) {
 		if (obj.gameObject.tag.Equals ("Player")) {
-			bg.GetPlayerGame().lifes--;
+			bg.GetPlayerGame().LooseLife();
 		}
 		if (obj.gameObject.tag.Equals ("Box")) {
 			NetworkServer.Destroy (obj.gameObject);
