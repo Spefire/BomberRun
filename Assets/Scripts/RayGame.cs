@@ -5,8 +5,9 @@ using UnityEngine.Networking;
 
 public class RayGame : NetworkBehaviour {
 
-	public float speed = 0.1f;
+	public float speed = 10.0f;
 	private int orientation;
+	private float startSize;
 	private float currentSize;
 	private bool canExpand;
 	private BombGame bg;
@@ -15,13 +16,14 @@ public class RayGame : NetworkBehaviour {
 	//---------------------------------------------------------------------------------------------
 
 	void Start() {
+		startSize = this.transform.localScale.x;
 		currentSize = 0.0f;
 	}
 
 	[ServerCallback]
 	void Update () {
 		if (canExpand) {
-			if (currentSize < (bg.powerLevel - 1)) {
+			if (currentSize < (bg.powerLevel - startSize + 0.5f)) {
 				currentSize += speed * Time.deltaTime;
 				this.transform.localScale += new Vector3 (speed * Time.deltaTime, 0, 0);
 				switch (orientation) {
