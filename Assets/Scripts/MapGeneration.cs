@@ -5,49 +5,52 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MapGeneration : NetworkBehaviour {
+//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
+public class Map {
 
-	public class Map {
-		public int sizeX;
-		public int sizeZ;
-		public char[,] cases;
-		public Vector3 spawnPosP1;
-		public Vector3 spawnPosP2;
+	[SyncVar]
+	public char[,] cases;
 
-		public Map(int sizeX, int sizeZ) {
-			this.sizeX = sizeX;
-			this.sizeZ = sizeZ;
-			this.cases = new char[sizeX, sizeZ];
-			for(int i = 0; i < sizeX; i++) {
-				for(int k = 0; k < sizeZ; k++) {
-					this.cases[i, k] = ' ';
-				}
+	public int sizeX;
+	public int sizeZ;
+	public Vector3 spawnPosP1;
+	public Vector3 spawnPosP2;
+
+	public Map(int sizeX, int sizeZ) {
+		this.sizeX = sizeX;
+		this.sizeZ = sizeZ;
+		this.cases = new char[sizeX, sizeZ];
+		for(int i = 0; i < sizeX; i++) {
+			for(int k = 0; k < sizeZ; k++) {
+				this.cases[i, k] = ' ';
 			}
-		}
-
-		public void SetCase(int x, int z, char type) {
-			this.cases [x, z] = type;
-			if (type.Equals ('A')) {
-				spawnPosP1 = new Vector3 (x, 2, z);
-			} else if (type.Equals ('B')) {
-				spawnPosP2 = new Vector3 (x, 2, z);
-			}
-		}
-
-		public char GetCase(int x, int z) {
-			return cases [x, z];
-		}
-
-		public bool IsEmpty(int x, int z) {
-			return cases [x, z]==' ';
 		}
 	}
 
-	//-----------------------------------------------------------------------
-	//-----------------------------------------------------------------------
+	public void SetCase(int x, int z, char type) {
+		this.cases [x, z] = type;
+		if (type.Equals ('A')) {
+			spawnPosP1 = new Vector3 (x, 2, z);
+		} else if (type.Equals ('B')) {
+			spawnPosP2 = new Vector3 (x, 2, z);
+		}
+	}
+
+	public char GetCase(int x, int z) {
+		return cases [x, z];
+	}
+
+	public bool IsEmpty(int x, int z) {
+		return cases [x, z]==' ';
+	}
+}
+
+//-----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+
+public class MapGeneration : NetworkBehaviour {
 
 	public static Map currentMap;
 	public GameObject wallPrefab;
