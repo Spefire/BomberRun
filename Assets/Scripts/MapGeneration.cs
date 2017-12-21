@@ -100,8 +100,8 @@ public class MapGeneration : NetworkBehaviour {
 		Instantiate (spawnPoint, currentMap.spawnPosP2, this.transform.rotation);
 
 		//Create Ground
-		GameObject ground = (GameObject) Instantiate (groundPrefab, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
-		ground.transform.localScale += new Vector3(currentMap.sizeX-1f, -0.9f, currentMap.sizeZ-1f);
+		//GameObject ground = (GameObject) Instantiate (groundPrefab, new Vector3 ((currentMap.sizeX-1f)/2, 0, (currentMap.sizeZ-1f)/2), this.transform.rotation);
+		//ground.transform.localScale += new Vector3((currentMap.sizeX-1f)*5, -0.9f, (currentMap.sizeZ-1f)*5);
 
 		//Create Walls and Boxes
 		for(int i = 0; i < currentMap.sizeX; i++) {
