@@ -16,6 +16,7 @@ public class BombGame : NetworkBehaviour {
 
 	void Start () {
 		age = 0.0f;
+		UpdateLooseBomb ();
 	}
 
 	[ServerCallback]
@@ -48,11 +49,22 @@ public class BombGame : NetworkBehaviour {
 		}
 	}
 
+	public void UpdateLooseBomb(){
+		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+		foreach (GameObject player in players) {
+			PlayerGame pg = player.GetComponent<PlayerGame> ();
+			Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
+			if (pg.id == id) {
+				pg.LooseBomb ();
+			}
+		}
+	}
+
 	public void UpdateGainBomb(){
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		foreach (GameObject player in players) {
 			PlayerGame pg = player.GetComponent<PlayerGame> ();
-			Debug.LogError ("Player Game : " + pg);
+			Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
 			if (pg.id == id) {
 				pg.GainBomb ();
 			}
