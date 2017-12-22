@@ -25,7 +25,7 @@ public class BombGame : NetworkBehaviour {
 		if (age > bombLifetime) {
 			UpdateGainBomb ();
 			//1
-			/*GameObject g = (GameObject) Instantiate (rayPrefab, this.transform.position, this.transform.rotation);
+			GameObject g = (GameObject) Instantiate (rayPrefab, this.transform.position, this.transform.rotation);
 			g.GetComponent<RayGame> ().SetBombGame (this, 1);
 			NetworkServer.Spawn (g);
 			//2
@@ -42,7 +42,7 @@ public class BombGame : NetworkBehaviour {
 			this.transform.Rotate (new Vector3 (0, 90, 0));
 			g = (GameObject) Instantiate (rayPrefab, this.transform.position, this.transform.rotation);
 			g.GetComponent<RayGame> ().SetBombGame (this, 4);
-			NetworkServer.Spawn (g);*/
+			NetworkServer.Spawn (g);
 			//
 			NetworkServer.Destroy (gameObject);
 		}
