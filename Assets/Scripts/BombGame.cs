@@ -24,7 +24,6 @@ public class BombGame : NetworkBehaviour {
 		age += Time.deltaTime;
 		if (age > bombLifetime) {
 			UpdateGainBomb ();
-			//pg.GainBomb();
 			//1
 			/*GameObject g = (GameObject) Instantiate (rayPrefab, this.transform.position, this.transform.rotation);
 			g.GetComponent<RayGame> ().SetBombGame (this, 1);
@@ -53,7 +52,7 @@ public class BombGame : NetworkBehaviour {
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		foreach (GameObject player in players) {
 			PlayerGame pg = player.GetComponent<PlayerGame> ();
-			Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
+			//Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
 			if (pg.id == id) {
 				pg.LooseBomb ();
 			}
@@ -64,7 +63,7 @@ public class BombGame : NetworkBehaviour {
 		GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 		foreach (GameObject player in players) {
 			PlayerGame pg = player.GetComponent<PlayerGame> ();
-			Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
+			//Debug.LogError ("Player Game ID : " + pg.id + "/" + id);
 			if (pg.id == id) {
 				pg.GainBomb ();
 			}
@@ -73,6 +72,5 @@ public class BombGame : NetworkBehaviour {
 
 	public void SetIDPlayerGame(int id) {
 		this.id = id;
-		Debug.LogError ("BOMB ID : " + id);
 	}
 }
