@@ -16,6 +16,9 @@ public class NetworkManagerExtension : NetworkManager {
 	private Vector3 cameraPosition;
 	[Header("Map Properties")]
 	public MapGeneration genMap;
+	public AudioClip menuSong;
+	public AudioClip gameSong;
+	private AudioSource audioSrc;
 
 	//---------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------
@@ -25,6 +28,8 @@ public class NetworkManagerExtension : NetworkManager {
 		genMap.CreateMap ("map02.csv");
 		genMap.CreateStructure ();
 		cameraPosition = genMap.GetMapPosition ();
+		audioSrc = GetComponent<AudioSource> ();
+		audioSrc.PlayOneShot (menuSong);
 	}
 
 	void Update () {
@@ -63,6 +68,8 @@ public class NetworkManagerExtension : NetworkManager {
 		menuPrincipal.SetActive (false);
 		menuCredits.SetActive (false);
 		isOnCredits = false;
+		audioSrc.Stop ();
+		audioSrc.PlayOneShot (gameSong);
 	}
 
 	public override void OnStartClient(NetworkClient client) {
